@@ -1,0 +1,5 @@
+# R proje gereksinimleri
+
+# Aşağıdaki paketler yüklenmelidir:
+readxl
+jsonlite
