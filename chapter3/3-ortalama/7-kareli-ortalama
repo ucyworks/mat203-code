@@ -1,0 +1,96 @@
+# Kareli Ortalama (Karesel Ortalama / RMS - Root Mean Square) Hesaplama
+# Formül: K = √(Σ(x²) / n)
+# K: Kareli ortalama
+# n: Gözlem sayısı
+# x: Değerler
+# Kareli ortalama genellikle fizik ve mühendislikte kullanılır (örn: RMS voltaj)
+
+# gridExtra paketi ile tabloları PNG olarak kaydetmek için gerekli
+library(gridExtra)
+
+# Ham veri
+values <- c(3, 5, 7)
+
+# Her değerin karesini hesapla (x²)
+squared_values <- values^2
+
+# Karelerin toplamını hesapla
+sum_squared <- sum(squared_values)
+
+# Gözlem sayısı
+n <- length(values)
+
+# Karelerin ortalamasını hesapla
+mean_squared <- sum_squared / n
+
+# Kareli ortalama hesapla: K = √(Σ(x²) / n)
+quadratic_mean <- sqrt(mean_squared)
+
+# Detaylı hesaplama tablosu oluştur
+calculation_table <- data.frame(
+  "Sıra" = 1:length(values),
+  "Değer (x)" = values,
+  "x²" = squared_values,
+  check.names = FALSE
+)
+
+# Toplam satırını ekle
+calculation_table_with_total <- rbind(
+  calculation_table,
+  data.frame(
+    "Sıra" = "TOPLAM/ORTALAMA",
+    "Değer (x)" = "",
+    "x²" = sum_squared,
+    check.names = FALSE
+  )
+)
+
+# Konsola hesaplama detaylarını yazdır
+cat("\n=== KARELİ ORTALAMA (RMS) HESAPLAMA ===\n\n")
+cat("Formül: K = √(Σ(x²) / n)\n\n")
+cat("Hesaplama Adımları:\n")
+cat("1. Her değerin karesini al: x²\n")
+cat("2. Gözlem sayısı: n =", n, "\n")
+cat("3. Karelerin toplamı: Σ(x²) =", sum_squared, "\n")
+cat("4. Karelerin ortalaması: Σ(x²)/n =", sum_squared, "/", n, "=", mean_squared, "\n")
+cat("5. Karekök al: K = √(", mean_squared, ") =", quadratic_mean, "\n\n")
+
+# Tabloyu View ile göster
+View(calculation_table_with_total)
+
+# Tabloyu PNG olarak kaydet
+output_dir <- "chapter3/3-ortalama"
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir, recursive = TRUE)
+}
+
+png(file.path(output_dir, "7-kareli-ortalama-1-table.png"), 
+    width = 800, height = 400)
+grid.table(calculation_table_with_total, rows = NULL)
+dev.off()
+
+# Sonuç tablosu oluştur
+result_table <- data.frame(
+  "İstatistik" = c("n (Gözlem Sayısı)",
+                   "Σ(x²) (Karelerin Toplamı)",
+                   "Σ(x²)/n (Karelerin Ortalaması)",
+                   "K (Kareli Ortalama)"),
+  "Değer" = c(n,
+              sum_squared,
+              mean_squared,
+              quadratic_mean),
+  check.names = FALSE
+)
+
+# Sonuç tablosunu View ile göster
+View(result_table)
+
+# Sonuç tablosunu PNG olarak kaydet
+png(file.path(output_dir, "7-kareli-ortalama-2-result.png"), 
+    width = 700, height = 350)
+grid.table(result_table, rows = NULL)
+dev.off()
+
+cat("Tablolar kaydedildi:\n")
+cat("- ", file.path(output_dir, "7-kareli-ortalama-1-table.png"), "\n")
+cat("- ", file.path(output_dir, "7-kareli-ortalama-2-result.png"), "\n")
